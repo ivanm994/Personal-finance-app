@@ -8,9 +8,12 @@ namespace Personal_finance_app.Respositories
 {
     public interface IBudgetRepository
     {
-        List<Transaction> GetTransactions();
+        
         List<Category> GetCategories();
+
+        List<Transaction> GetTransactions();
         void AddTransaction (Transaction transaction);
+        void UpdateTransaction (Transaction transaction);
     }
 
     public class BudgetRepository : IBudgetRepository
@@ -24,7 +27,11 @@ namespace Personal_finance_app.Respositories
 
         public void AddTransaction(Transaction transaction)
         {
-            throw new NotImplementedException();
+            using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
+            {
+                var sql = "INSERT INTO Transactions(Name, Date, Amount, TransactionType, CategoryId ) Values(@Name, @Date, @Amount, @TransactionType, @CategoryId )";
+                connection.Execute(sql, transaction);
+            }
         }
 
         public List<Category> GetCategories()
