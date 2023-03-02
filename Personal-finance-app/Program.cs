@@ -1,7 +1,10 @@
+using Personal_finance_app.Respositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
 
 var app = builder.Build();
 
