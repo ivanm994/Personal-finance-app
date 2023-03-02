@@ -42,6 +42,13 @@ namespace Personal_finance_app.Controllers
                 CategoryId = model.InsertTransaction.CategoryId
             };
 
+            if (transaction.Id > 0)
+                _budgetRepository.UpdateTransaction(transaction);
+            else
+                _budgetRepository.AddTransaction(transaction);
+
+            return RedirectToAction("Index");
+
             _budgetRepository.AddTransaction(transaction);
 
             return RedirectToAction("Index");

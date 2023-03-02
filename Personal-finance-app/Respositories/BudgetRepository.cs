@@ -61,5 +61,18 @@ namespace Personal_finance_app.Respositories
                 return allTransactions.ToList();
             }
         }
+
+        public void UpdateTransaction(Transaction transaction)
+        {
+            using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
+            {
+                var sql =
+                    @"UPDATE Transactions
+                          SET Date = @Date, Amount = @Amount, Name = @Name, CategoryId = @CategoryId, TransactionType = @TransactionType
+                          WHERE Id = @Id";
+
+                connection.Execute(sql, transaction);
+            }
+        }
     }
 }
