@@ -53,5 +53,11 @@ namespace Personal_finance_app.Controllers
 
             return RedirectToAction("Index");
         }
+        public IActionResult DeleteTransaction(int id)
+        {
+            _budgetRepository.DeleteTransaction(id);
+
+            return RedirectToAction("Index");
+        }
     }
 }

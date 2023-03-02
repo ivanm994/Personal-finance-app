@@ -14,6 +14,7 @@ namespace Personal_finance_app.Respositories
         List<Transaction> GetTransactions();
         void AddTransaction (Transaction transaction);
         void UpdateTransaction (Transaction transaction);
+        void DeleteTransaction (int id);
     }
 
     public class BudgetRepository : IBudgetRepository
@@ -31,6 +32,15 @@ namespace Personal_finance_app.Respositories
             {
                 var sql = "INSERT INTO Transactions(Name, Date, Amount, TransactionType, CategoryId ) Values(@Name, @Date, @Amount, @TransactionType, @CategoryId )";
                 connection.Execute(sql, transaction);
+            }
+        }
+
+        public void DeleteTransaction(int id)
+        {
+            using (IDbConnection connection = new SqliteConnection(_configuration.GetConnectionString("ConnectionString")))
+            {
+                var sql = "DELETE FROM Transactions WHERE Id = @id";
+                connection.Execute(sql, new { id });
             }
         }
 
