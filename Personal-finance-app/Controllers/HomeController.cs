@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Personal_finance_app.Models.VIewModels;
 using Personal_finance_app.Respositories;
+using Personal_finance_app.Models;
 using System.Diagnostics;
 
 namespace Personal_finance_app.Controllers
@@ -17,13 +18,33 @@ namespace Personal_finance_app.Controllers
         public IActionResult Index()
         {
             var transactions = _budgetRepository.GetTransactions();
+            var categories = _budgetRepository.GetCategories();
 
             var viewModel = new BudgetViewModel
             {
-                Transactions = transactions
+                Transactions = transactions,
+                InsertTransaction = new InsertTransactionViewModel { Categories = categories }
             };
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult InsertTransaction(BudgetViewModel model)
+        {
+            var transaction = new Transaction
+            {
+                Id = model.InsertTransaction.Id,
+                Amount = model.InsertTransaction.Amount,
+                Name = model.InsertTransaction.Name,
+                Date = model.InsertTransaction.Date,
+                TransactionType = model.InsertTransaction.TransactionType,
+                CategoryId = model.InsertTransaction.CategoryId
+            };
+
+            _budgetRepository.AddTransaction(transaction);
+
+            return RedirectToAction("Index");
         }
     }
 }
